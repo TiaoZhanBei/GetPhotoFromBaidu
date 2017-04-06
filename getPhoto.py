@@ -16,6 +16,10 @@ header = {
 
 
 def get_photo(word, size):
+    try:
+        os.mkdir("pictures")
+    except FileExistsError:
+        pass
     for i in range(int(size/30)):
         params = {
             'tn':'resultjson_com',
