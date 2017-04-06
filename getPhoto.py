@@ -69,11 +69,8 @@ def get_photo_from_url(Url, id, word):
     print(Url)
     try:
         pic = requests.get(Url, timeout=15)
-    except requests.exceptions.ConnectionError:
+    except Exception as e:
         print('【错误】当前图片无法下载')
-        return
-    except socket.timeout:
-        print('链接超时')
         return
     string = 'pictures/' + word + '_' + str(id) + '.jpg'
     fp = open(string.encode('utf-8'), 'wb')
