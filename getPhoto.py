@@ -76,6 +76,6 @@ def get_photo_from_url(Url, id, word):
         print('链接超时')
         return
     string = 'pictures/' + word + '_' + str(id) + '.jpg'
-    fp = open(string.encode('cp936'), 'wb')
+    fp = open(string.encode('utf-8'), 'wb')
     fp.write(pic.content)
     fp.close()
