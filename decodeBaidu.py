@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 str_table = {
 '_z2C$q': ':',
 '_z&e3B': '.',
