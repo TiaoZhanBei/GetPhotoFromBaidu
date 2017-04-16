@@ -5,7 +5,7 @@ import os
 import json
 import threading
 from decodeBaidu import decode
-
+from multiprocessing.dummy import Pool as ThreadPool
 url = 'http://image.baidu.com/search/acjson'
 
 header = {
@@ -21,6 +21,7 @@ def get_photo(word, size):
         os.mkdir("pictures")
     except FileExistsError:
         pass
+    tasks = []
     for i in range(int(size/30)):
         params = {
             'tn':'resultjson_com',
@@ -61,18 +62,22 @@ def get_photo(word, size):
         for j in range(30):
             each = temp[j]['objURL']
             each = decode(each)
-            get_photo_from_url(each, i*30+j, word)
+            # get_photo_from_url(each, i*30+j, word)
+            tasks.append((each, i * 30 + j, word))
+    pool = ThreadPool(30)
+    pool.starmap(get_photo_from_url, tasks)
+    pool.close()
 
 
 def get_photo_from_url(Url, id, word):
     print('正在下载第'+str(id)+'张图片')
     print(Url)
     try:
-        pic = requests.get(Url, timeout=15)
+        pic = requests.get(Url, timeout=5)
     except Exception as e:
         print('【错误】当前图片无法下载')
         return
     string = 'pictures/' + word + '_' + str(id) + '.jpg'
-    fp = open(string.encode('utf-8'), 'wb')
+    fp = open(string.encode('cp936'), 'wb')
     fp.write(pic.content)
     fp.close()
