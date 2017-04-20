@@ -55,9 +55,9 @@ def get_photo(words, size):
                 'gsm':'5a',
                 '1491273347594':''
             }
-            z1 = requests.get(url=url, params=params, headers=header)
-            print(z1.status_code)
             try:
+                z1 = requests.get(url=url, params=params, headers=header)
+                print(z1.status_code)
                 js = z1.json()
             except:
                 print('error and jump')
