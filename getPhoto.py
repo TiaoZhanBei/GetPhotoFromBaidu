@@ -25,7 +25,7 @@ def get_photo(words, size):
     tasks = []
     try:
         os.mkdir("pictures")
-    except FileExistsError:
+    except:
         pass
     for word in words:
         for i in range(int(size/30)):
