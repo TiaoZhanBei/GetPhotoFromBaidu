@@ -6,6 +6,7 @@ import json
 import threading
 from decodeBaidu import decode
 from multiprocessing.dummy import Pool as ThreadPool
+import platform
 url = 'http://image.baidu.com/search/acjson'
 
 header = {
@@ -15,6 +16,10 @@ header = {
     'Host':'image.baidu.com'
 }
 
+if platform.system() == "Windows":
+    dcd = 'cp936'
+else:
+    dcd = 'utf-8'
 
 def get_photo(words, size):
     tasks = []
@@ -86,6 +91,6 @@ def get_photo_from_url(Url, id, word):
         print('【错误】当前图片无法下载')
         return
     string = 'pictures/' + word + '_' + str(id) + '.jpg'
-    fp = open(string.encode('cp936'), 'wb')
+    fp = open(string.encode(dcd), 'wb')
     fp.write(pic.content)
     fp.close()
