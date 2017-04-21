@@ -16,6 +16,7 @@ header = {
     'Host':'image.baidu.com'
 }
 
+isWin = False
 if platform.system() == "Windows":
     isWin = True
 
