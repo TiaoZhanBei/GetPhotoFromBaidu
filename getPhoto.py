@@ -17,9 +17,7 @@ header = {
 }
 
 if platform.system() == "Windows":
-    dcd = 'cp936'
-else:
-    dcd = 'utf-8'
+    isWin = True
 
 def get_photo(words, size):
     tasks = []
@@ -91,6 +89,8 @@ def get_photo_from_url(Url, id, word):
         print('【错误】当前图片无法下载')
         return
     string = 'pictures/' + word + '_' + str(id) + '.jpg'
-    fp = open(string.encode(dcd), 'wb')
+    if isWin:
+        string = string.encode('cp936')
+    fp = open(string, 'wb')
     fp.write(pic.content)
     fp.close()
