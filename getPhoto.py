@@ -17,11 +17,11 @@ header = {
 
 
 def get_photo(words, size):
+    tasks = []
     try:
         os.mkdir("pictures")
     except FileExistsError:
         pass
-    tasks = []
     for word in words:
         for i in range(int(size/30)):
             params = {
@@ -55,12 +55,12 @@ def get_photo(words, size):
                 'gsm':'5a',
                 '1491273347594':''
             }
-            z1 = requests.get(url=url, params=params, headers=header)
-            print(z1.status_code)
             try:
+                z1 = requests.get(url=url, params=params, headers=header)
+                print(z1.status_code)
                 js = z1.json()
             except:
-                print('error and jump')
+                print('pull pages error and jump')
                 continue
             temp = js['data']
             print('get 30 ' + word + ' records')
@@ -69,8 +69,11 @@ def get_photo(words, size):
                 each = decode(each)
                 # get_photo_from_url(each, i*30+j, word)
                 tasks.append((each, i * 30 + j, word))
+    def worker(i):
+        get_photo_from_url(tasks[i][0], tasks[i][1], tasks[i][2])
     pool = ThreadPool(40)
-    pool.starmap(get_photo_from_url, tasks)
+    # pool.starmap(get_photo_from_url, tasks)
+    pool.map(worker, [i for i in range(len(tasks))])
     pool.close()
 
 
